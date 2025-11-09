@@ -6,8 +6,6 @@ public class Player : MonoBehaviour
     public float maxSpeed = 10f;
     Rigidbody2D rd;
 
-    public GameObject bobber;
-
     private void Start()
     {
         rd = GetComponent<Rigidbody2D>();
