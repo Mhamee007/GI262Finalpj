@@ -1,53 +1,94 @@
 using UnityEngine;
-
 using System.Collections;
-using UnityEngine.SocialPlatforms.Impl;
 
-public class test : MonoBehaviour
+
+public enum FishingState1 { Idle, Charging, Casted, Reeling }
+
+public class test : Equipment
 {
-    [SerializeField] Transform shootPoint;
+    [SerializeField] Transform rodTip;
     [SerializeField] GameObject target; // target sprite
-    [SerializeField] Rigidbody2D objectToShoot;
+    [SerializeField] Rigidbody2D bobber;
 
-    [SerializeField] float spawnDelay = 5f;
-    [SerializeField] float destroyAfter = 5f;
-
-
+    [SerializeField] float spawnDelay = 1f;
+    [SerializeField] float destroyAfter = 2f;
 
     private bool canShoot = true;
 
+    //Rod
+    public float chargeTime = 0f;
+    public float maxChargeTime = 1f;
+
+    public float reelSpeed = 3f;
+    private FishingState1 state = FishingState1.Idle;
+    private Vector2 targetPoint;
+    private Vector2 velocity;
+
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canShoot)
+        if (state == FishingState1.Idle)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(ray.origin, ray.direction * 5f, Color.red, 5f);
-
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
-
-            if (hit.collider != null)
+            if (Input.GetMouseButtonDown(0))
             {
-                target.transform.position = hit.point;
-                Debug.Log("Clicked on: " + hit.collider.name);
-
-                Vector2 projectileVelocity = CalculateProjectileVelocity(shootPoint.position, hit.point, 1f);
-                StartCoroutine(ShootWithDelay(projectileVelocity));
+                chargeTime += Time.deltaTime;
+                chargeTime = Mathf.Min(chargeTime, maxChargeTime);
+                Debug.Log("Charg");
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                doCast();
+                Debug.Log("Cast");
             }
         }
+        else if (state == FishingState1.Casted)
+        {
+            ReelBobber();
+            
+        }
+
     }
 
-    IEnumerator ShootWithDelay(Vector2 velocity)
+    void doCast()
     {
-        canShoot = false;
-        yield return new WaitForSeconds(spawnDelay);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
+        Debug.Log("cast state");
+        if (hit.collider != null)
+        {
 
-        Rigidbody2D newProjectile = Instantiate(objectToShoot, shootPoint.position, Quaternion.identity);
-        newProjectile.linearVelocity = velocity;
-        Destroy(newProjectile.gameObject, destroyAfter); //destroy after not use.
 
-        yield return new WaitForSeconds(0.1f); // allowing next shoot
-        canShoot = true;
+            Vector2 projectileVelocity = CalculateProjectileVelocity(rodTip.position, hit.point, chargeTime);
+            target.transform.position = hit.point;
+           
+            bobber.AddForce(projectileVelocity * chargeTime, ForceMode2D.Impulse);
+            bobber.transform.position = rodTip.position;
+            bobber.linearVelocity = velocity;
+
+
+            state = FishingState1.Casted;
+            Debug.Log("Cast complete!");
+        }
+
     }
+
+    void ReelBobber()
+    {
+        state = FishingState1.Casted;
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("reeling");
+            bobber.transform.position = Vector2.MoveTowards(bobber.transform.position, rodTip.position, reelSpeed * Time.deltaTime);
+            bobber.position = rodTip.position;
+            state = FishingState1.Idle;
+
+            Debug.Log("reel state");
+        }
+
+
+
+    }
+
 
     Vector2 CalculateProjectileVelocity(Vector2 origin, Vector2 target, float time)
     {
