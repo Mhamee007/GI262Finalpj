@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 20f;
-    public float maxSpeed = 10f;
+    public float speed = 10f;
     Rigidbody2D rd;
 
     private void Start()
@@ -13,13 +12,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        float movement = Input.GetAxisRaw("Horizontal");
-        
-        rd.linearVelocity = new Vector2(movement * speed, rd.linearVelocityY);
-    }
 
-    private void FixedUpdate()
-    {
-       
+        float movement = Input.GetAxisRaw("Horizontal");
+        rd.linearVelocity = new Vector2(movement * speed, rd.linearVelocityY);
     }
 }

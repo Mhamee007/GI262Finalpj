@@ -1,24 +1,27 @@
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 
-public enum FishingState1 { Idle, Charging, Casted, Reeling }
+ enum FishingState1 { Idle, Charging, Casted, Reeling }
 
 public class test : Equipment
 {
-    [SerializeField] Transform rodTip;
-    [SerializeField] Rigidbody2D bobber;
+    [SerializeField] Transform rodTip;   
+    [SerializeField] DistanceJoint2D fishingLine;
 
     //Rod
-    public float chargeTime = 0f;
-    public float maxChargeTime = 2f;
-
+    [SerializeField] float chargeTime = 0f;
+    [SerializeField] float maxChargeTime = 2f;
 
     public float reelSpeed = 0.1f;
 
-    private FishingState1 state = FishingState1.Idle;
- 
+    [SerializeField] float minLength = 3f;
+    public float maxLength = 40f;
 
+    FishingState1 state = FishingState1.Idle;
+
+    
 
     void Start()
     {
@@ -31,6 +34,8 @@ public class test : Equipment
 
         if (state == FishingState1.Idle)
         {
+            bobber.linearDamping = 3;
+            bobber.angularDamping = 5;
 
             if (Input.GetMouseButton(0))
             {
@@ -65,32 +70,40 @@ public class test : Equipment
         float clampedCharge = Mathf.Clamp(chargeTime, 0f, maxChargeTime);
         float throwPower = clampedCharge * 10f; 
 
-        
+         
         bobber.transform.position = rodTip.position;
         bobber.linearVelocity = direction * throwPower;
+
+        float newLenghtLine = Mathf.Lerp(minLength, maxLength, clampedCharge / maxChargeTime);
+        fishingLine.distance = newLenghtLine;
+
 
         chargeTime = 0f;
         state = FishingState1.Casted;
         Debug.Log($"Cast! Power={throwPower}");
+        Debug.Log($"Cast! distant={newLenghtLine}");
 
 
     }
 
     void ReelBobber()
     {
-        //state = FishingState1.Casted;
-        state = FishingState1.Idle;
+            state = FishingState1.Casted;
 
+            
+            fishingLine.distance = 0.6f; 
 
             Vector2 current = bobber.transform.position;
-            Vector2 target = rodTip.position;
- 
+            Vector2 target = rodTip.position; 
+
             float step = reelSpeed * Time.deltaTime;
+
             Vector2 next = Vector2.MoveTowards(current, target, step);
             bobber.transform.position = next;
 
-            Debug.Log("reeling");
-            
+        Debug.Log("reeling");
+
+
         if (Vector2.Distance(next, target) <= 0.05f)
             { 
                 bobber.transform.position = rodTip.position;
@@ -105,6 +118,5 @@ public class test : Equipment
 
     }
 
-
-
+    
 }
