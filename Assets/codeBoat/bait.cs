@@ -10,7 +10,6 @@ public class bait : Equipment
             bobber.angularDamping = 8;
             Debug.Log("enter water");
         }
-        
     }
 
     private void OnTriggerExit2D(Collider2D outWater)
