@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : gameManager
 {
     public float speed = 10f;
     Rigidbody2D rd;

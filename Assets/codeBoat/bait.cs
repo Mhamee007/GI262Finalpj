@@ -11,7 +11,6 @@ public class bait : Equipment
             Debug.Log("enter water");
         }
         
-
     }
 
     private void OnTriggerExit2D(Collider2D outWater)

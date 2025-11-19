@@ -1,17 +1,20 @@
 using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
-
-
+using System;
 
 public class test : Equipment
 {
     [SerializeField] Transform rodTip;
     [SerializeField] DistanceJoint2D fishingLine;
+    public Rigidbody2D Rb2Dplayer;
 
     //Rod
     [SerializeField] float chargeTime = 0f;
     [SerializeField] float maxChargeTime = 2f;
+
+    bool casted = false;
+    bool reeled = false;
 
     void Start()
     {
@@ -37,14 +40,28 @@ public class test : Equipment
             {
                 doCast();
                 Debug.Log("Cast");
-
             }
         }
         else if (state == FishingState1.Casted)
         {
+
             if (Input.GetMouseButton(0))
             {
-                ReelBobber();
+                if (casted == true)
+                {
+                    Rb2Dplayer.constraints = RigidbodyConstraints2D.FreezeAll;
+                    ReelBobber();
+                }
+                else
+                {
+                    Debug.Log("Still cast...");
+                }
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                Rb2Dplayer.constraints = RigidbodyConstraints2D.FreezePositionY;
+                Rb2Dplayer.constraints = RigidbodyConstraints2D.FreezeRotation;
+            
             }
         }
 
@@ -52,6 +69,7 @@ public class test : Equipment
 
     void doCast()
     {
+        Rb2Dplayer.constraints = RigidbodyConstraints2D.FreezeAll;
 
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorld - rodTip.position).normalized;
@@ -67,12 +85,19 @@ public class test : Equipment
         float newLenghtLine = Mathf.Lerp(minLength, maxLength, clampedCharge / maxChargeTime);
         fishingLine.distance = newLenghtLine;
 
+        if (true)
+        {
+            casted = true;
+        }
 
-        chargeTime = 0f;
-        state = FishingState1.Casted;
-        Debug.Log($"Cast! Power={throwPower}");
-        Debug.Log($"Cast! distant={newLenghtLine}");
 
+        if (casted = true)
+        {
+            state = FishingState1.Casted;
+            chargeTime = 0f;
+            Debug.Log($"Cast! Power={throwPower}");
+            Debug.Log($"Cast! distant={newLenghtLine}");
+        }
 
     }
 
@@ -102,6 +127,15 @@ public class test : Equipment
             Debug.Log("reeling");
         }
             
+    }
+
+    public override void Description()
+    {
+        if (rodLvl >= 10)
+        {
+            Console.WriteLine("Normal rod");
+        }
+        
     }
 
 }

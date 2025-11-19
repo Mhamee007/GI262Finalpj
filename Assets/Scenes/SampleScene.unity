@@ -411,6 +411,7 @@ MonoBehaviour:
   fishingLine: {fileID: 1357891474}
   chargeTime: 0
   maxChargeTime: 1
+  Rb2Dplayer: {fileID: 534883168}
 --- !u!1 &421830420 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5054011366404266586, guid: 0c1bd68d2e5a64e488c22d2e87342ce4, type: 3}
@@ -733,7 +734,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 6
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
