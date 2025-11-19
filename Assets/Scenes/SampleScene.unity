@@ -382,11 +382,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab2c95d647c62034c8bad35481808fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fishingRod
+  playerLvl: 0
+  playerMoney: 0
+  fishtSpawnTime: 0
+  upgrades: []
   bobber: {fileID: 1357891473}
+  playerLvRequired: 0
   state: 0
+  throwPowerMultiplier: 0
   reelSpeed: 0.1
-  minLength: 3
   maxLength: 40
+  currentLevel: 0
   rodTip: {fileID: 1727026645}
   bobber: {fileID: 1357891473}
   line: {fileID: 113799952}
@@ -402,16 +408,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a0fd8d4582015469a675a7b78e1252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test
+  playerLvl: 0
+  playerMoney: 0
+  fishtSpawnTime: 0
+  upgrades: []
   bobber: {fileID: 1357891470}
+  playerLvRequired: 0
   state: 0
+  throwPowerMultiplier: 0
   reelSpeed: 5
-  minLength: 3
   maxLength: 40
+  currentLevel: 0
   rodTip: {fileID: 1727026645}
   fishingLine: {fileID: 1357891474}
+  Rb2Dplayer: {fileID: 534883168}
   chargeTime: 0
   maxChargeTime: 1
-  Rb2Dplayer: {fileID: 534883168}
+  baseThrowPower: 10
 --- !u!1 &421830420 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5054011366404266586, guid: 0c1bd68d2e5a64e488c22d2e87342ce4, type: 3}
@@ -632,6 +645,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3f48d5c1d3c904d835ab44624b64e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  playerLvl: 0
+  playerMoney: 0
+  fishtSpawnTime: 0
   speed: 10
 --- !u!212 &534883166
 SpriteRenderer:
@@ -965,7 +981,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 948480254}
-  - component: {fileID: 948480253}
+  - component: {fileID: 948480256}
+  - component: {fileID: 948480257}
+  - component: {fileID: 948480258}
   m_Layer: 0
   m_Name: gamemanager
   m_TagString: Untagged
@@ -973,23 +991,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &948480253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 948480252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17d7d6f414f091044b7e40c9a57cf8e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Equipment
-  bobber: {fileID: 1357891470}
-  state: 0
-  reelSpeed: 0.1
-  minLength: 3
-  maxLength: 40
 --- !u!4 &948480254
 Transform:
   m_ObjectHideFlags: 0
@@ -1005,6 +1006,73 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &948480256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948480252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03315af56bb8cb1489466c38a2e527f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::gameManager
+  playerLvl: 0
+  playerMoney: 0
+  fishtSpawnTime: 0
+--- !u!114 &948480257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948480252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3d9931710c28a846917a79c710ff729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Shop
+  gm: {fileID: 948480256}
+  rod: {fileID: 113799953}
+--- !u!114 &948480258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948480252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17d7d6f414f091044b7e40c9a57cf8e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Equipment
+  playerLvl: 0
+  playerMoney: 0
+  fishtSpawnTime: 0
+  upgrades:
+  - level: 0
+    maxLength: 10
+    reelSpeed: 0.1
+    throwPowerMultiplier: 1
+    upgradePrice: 0
+  - level: 5
+    maxLength: 20
+    reelSpeed: 0.1
+    throwPowerMultiplier: 1
+    upgradePrice: 20
+  - level: 10
+    maxLength: 30
+    reelSpeed: 0.3
+    throwPowerMultiplier: 1
+    upgradePrice: 50
+  bobber: {fileID: 1357891470}
+  playerLvRequired: 0
+  state: 0
+  throwPowerMultiplier: 0.5
+  reelSpeed: 0.1
+  maxLength: 10
+  currentLevel: 0
 --- !u!50 &1357891470 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 726340951180119008, guid: 0c1bd68d2e5a64e488c22d2e87342ce4, type: 3}
@@ -1047,11 +1115,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfe89c6161e76642a6c02a65f16387b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::bait
+  playerLvl: 0
+  playerMoney: 0
+  fishtSpawnTime: 0
+  upgrades: []
   bobber: {fileID: 1357891470}
+  playerLvRequired: 0
   state: 0
+  throwPowerMultiplier: 0
   reelSpeed: 0.1
-  minLength: 3
   maxLength: 40
+  currentLevel: 0
 --- !u!1 &1525791582
 GameObject:
   m_ObjectHideFlags: 0

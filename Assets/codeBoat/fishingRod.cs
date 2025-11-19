@@ -5,10 +5,9 @@ using static UnityEngine.GraphicsBuffer;
 
 public class fishingRod : Equipment
 {
-    public Transform rodTip;   // จุดปลายคันเบ็ด
-    public Transform bobber;   // เหยื่อ
-
-    [SerializeField] LineRenderer line;
+    public Transform rodTip;   
+    public Transform bobber;  
+   [SerializeField] LineRenderer line;
 
     void Start()
     {
