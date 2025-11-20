@@ -8,6 +8,6 @@ public class Shop : MonoBehaviour
 
     public void UpgradeRodButton()
     {
-        rod.TryUpgrade(gm);
+     
     }
 }

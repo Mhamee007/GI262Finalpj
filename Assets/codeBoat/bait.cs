@@ -1,15 +1,19 @@
+using System.Reflection;
 using UnityEngine;
 
 public class bait : Equipment
 {
-    private void OnTriggerEnter2D(Collider2D outWater)
+  
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (outWater.CompareTag("Water"))
+        if (collision.CompareTag("Water"))
         {
             bobber.linearDamping = 5;
             bobber.angularDamping = 8;
             Debug.Log("enter water");
-        }
+        } 
+
+       
     }
 
     private void OnTriggerExit2D(Collider2D outWater)

@@ -6,23 +6,25 @@ using UnityEngine.Rendering.Universal;
 
 public class test : Equipment
 {
-
-
     [SerializeField] Transform rodTip;
     [SerializeField] DistanceJoint2D fishingLine;
     [SerializeField] Rigidbody2D Rb2Dplayer;
 
     //Rod stats
-    float minLength = 3f;
+    
      float chargeTime = 0f;
-     float maxChargeTime = 2f;
+     float maxChargeTime = 1f;
      float baseThrowPower = 2f;
 
     bool canCast = true;
     bool bobberRetuen = false;
-    void Awake()
+    public void SetRodStats(RodUpgradeSO.RodUpgradeData data)
     {
-        ApplyUpgradeStats();
+        this.maxLength = data.maxLength;
+        this.reelSpeed = data.reelSpeed;
+        this.throwPowerMultiplier = data.throwPowerMultiplier;
+
+        Debug.Log($"Updread!: Ma={maxLength}, ReelSpeed={reelSpeed}");
     }
 
 
@@ -63,30 +65,18 @@ public class test : Equipment
 
     void doCast()
     {
-        int index = Mathf.Clamp(currentLevel, 0, upgrades.Length - 1);
+      
 
         Rb2Dplayer.constraints = RigidbodyConstraints2D.FreezeAll;
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorld - rodTip.position).normalized;
 
-
-        if (upgrades == null || upgrades.Length == 0)
-        {
-            Debug.LogError("Upgrades array is EMPTY! Add elements in Inspector.");
-            return;
-        }
-
-        if (currentLevel >= upgrades.Length)
-        {
-            Debug.LogError("CurrentLevel is higher than upgrades size!");
-            return;
-        }
-
         float clampedCharge = Mathf.Clamp(chargeTime, 0f, maxChargeTime);
+        //upgrade
         float throwPower = clampedCharge * baseThrowPower * throwPowerMultiplier;
         bobber.transform.position = rodTip.position;
         bobber.linearVelocity = direction * throwPower;
-
+        //upgrade
         float newLenghtLine = Mathf.Lerp(minLength, maxLength, clampedCharge / maxChargeTime);
         fishingLine.distance = newLenghtLine;
 
@@ -105,6 +95,7 @@ public class test : Equipment
          Rb2Dplayer.constraints = RigidbodyConstraints2D.FreezeAll;
         state = FishingState1.Casted;
 
+        //upgrade
         fishingLine.distance = Mathf.MoveTowards(
              fishingLine.distance,
               0.6f,
@@ -112,16 +103,18 @@ public class test : Equipment
 
         Vector2 current = bobber.transform.position;
         Vector2 target = rodTip.transform.position;
+
+        //upgrade
         float step = reelSpeed * Time.deltaTime;
 
         Vector2 next = Vector2.MoveTowards(current, target, step);
         bobber.transform.position = next;
 
-        if (Vector2.Distance(current, target) < 0.1f)
+        if (Vector2.Distance(current, target) <= minLength)
         {
             state = FishingState1.Idle;
             bobberRetuen = true;
-            Debug.Log("Complete reeling");
+            Debug.Log("Complete reeling (trigger)");
             StartCoroutine(DelayBeforeNextCast());
         }
         else
@@ -135,13 +128,12 @@ public class test : Equipment
     IEnumerator DelayBeforeNextCast()
     {
         canCast = false;
-
-        yield return new WaitForSeconds(1f); // ดีเลย์ 1 วินาที
+        yield return new WaitForSeconds(2f); // ดีเลย์ 1 วินาที
 
         canCast = true;
         Debug.Log("Ready to cast again!");
     }
 
-    
 
+    
 }
