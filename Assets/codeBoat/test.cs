@@ -34,18 +34,23 @@ public class test : Equipment
         {
             bobber.linearDamping = 3;
             bobber.angularDamping = 5;
+            if (canCast == true)
+            {
+                if (Input.GetMouseButton(0))
+                {
 
-            if (Input.GetMouseButton(0))
-            {
-                chargeTime += Time.deltaTime;
-                chargeTime = Mathf.Min(chargeTime, maxChargeTime);
-                Debug.Log("Charg");
+                    chargeTime += Time.deltaTime;
+                    chargeTime = Mathf.Min(chargeTime, maxChargeTime);
+                    Debug.Log("Charg");
+                }
+                else if (Input.GetMouseButtonUp(0))
+                {
+                    doCast();
+                    Debug.Log("Cast");
+                }
             }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                doCast();
-                Debug.Log("Cast");
-            }
+            else
+                Debug.Log("cantCast");
         }
         else if (state == FishingState1.Casted)
         {
@@ -127,9 +132,8 @@ public class test : Equipment
 
     IEnumerator DelayBeforeNextCast()
     {
-        canCast = false;
-        yield return new WaitForSeconds(2f); // ดีเลย์ 1 วินาที
-
+        
+        yield return new WaitForSeconds(3f); 
         canCast = true;
         Debug.Log("Ready to cast again!");
     }
