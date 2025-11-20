@@ -20,7 +20,10 @@ public class gameManager : MonoBehaviour
         UpdateMoneyUI();
         UpdateShopUI();
 
-        upgradeMenu.SetActive(false);
+        if (upgradeMenu != null)
+        { 
+            upgradeMenu.SetActive(false); 
+        }
     }
   
     public void UpgradeRod()
@@ -31,22 +34,18 @@ public class gameManager : MonoBehaviour
             Debug.Log("Max Level Reached!");
             return;
         }
-
    
         var nextUpgrade = rodUpgradeData.upgrades[currentRodLevel + 1];
 
-     
         if (playerMoney >= nextUpgrade.upgradePrice)
         {
          
             playerMoney -= nextUpgrade.upgradePrice;
-
-            
             currentRodLevel++;
-
           
             ApplyRodStats();
-
+            UpdateMoneyUI();
+            UpdateShopUI();
             Debug.Log($"Upgrade Success! Level: {currentRodLevel}, Money Left: {playerMoney}");
         }
         else
@@ -59,11 +58,9 @@ public class gameManager : MonoBehaviour
     {
        if (currentRodScript != null && rodUpgradeData != null)
        {
-      
           if (currentRodLevel < rodUpgradeData.upgrades.Length)
           {
             var data = rodUpgradeData.upgrades[currentRodLevel];
-
             currentRodScript.SetRodStats(data);
             
             Debug.Log("Complayr change!");
@@ -77,6 +74,7 @@ public class gameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI playerCountMoney;
     [SerializeField] private TextMeshProUGUI nextUpgradeText;
     [SerializeField] private Button upgradeButton;
+    [SerializeField] private Button openShopButton;
 
 
     public void UpdateMoneyUI()
@@ -87,14 +85,18 @@ public class gameManager : MonoBehaviour
 
     public void ToggleShop()
     {
-        bool active = !upgradeMenu.activeSelf; 
-
-        if (active)
+        if (upgradeMenu != null)
         {
-            upgradeMenu.SetActive(active);
-            UpdateShopUI();
-        }
+            bool isActive = !upgradeMenu.activeSelf;
+            upgradeMenu.SetActive(isActive);
 
+            if (isActive)
+            {
+                // พอเปิดร้านปุ๊บ ให้เช็คราคาของทันที
+                UpdateShopUI();
+            }
+
+        }
     }
 
     public void UpdateShopUI()
@@ -110,36 +112,5 @@ public class gameManager : MonoBehaviour
 
         nextUpgradeText.text = "Upgrade Price: $" + next.upgradePrice;
         upgradeButton.interactable = playerMoney >= next.upgradePrice;
-    }
-
-
-   
-
-    public void UpgradeRod_()
-    {
-        if (currentRodLevel + 1 >= rodUpgradeData.upgrades.Length)
-        {
-            Debug.Log("Max Level Reached!");
-            return;
-        }
-
-        var nextUpgrade = rodUpgradeData.upgrades[currentRodLevel + 1];
-
-        if (playerMoney >= nextUpgrade.upgradePrice)
-        {
-            playerMoney -= nextUpgrade.upgradePrice;
-            currentRodLevel++;
-            ApplyRodStats();
-
-            UpdateMoneyUI();
-            UpdateShopUI();
-
-            Debug.Log("Upgrade Success!");
-        }
-        else
-        {
-            Debug.Log("Not enough money!");
-        }
-
     }
 }
