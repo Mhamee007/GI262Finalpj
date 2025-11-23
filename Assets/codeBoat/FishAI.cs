@@ -41,7 +41,7 @@ public class FishAI : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Lure") && !isHooked)
+        if (other.CompareTag("Bobber") && !isHooked)
         {
             // ปลาชนเหยื่อ => กัด
             isHooked = true;
