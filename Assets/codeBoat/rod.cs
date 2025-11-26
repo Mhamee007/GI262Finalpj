@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using System;
 using UnityEngine.Rendering.Universal;
 
-public class test : Equipment
+public class rod : Equipment
 {
     [SerializeField] Transform rodTip;
     [SerializeField] DistanceJoint2D fishingLine;
@@ -17,14 +17,16 @@ public class test : Equipment
      float baseThrowPower = 2f;
 
     bool canCast = true;
-    bool bobberRetuen = false;
+
+    private FishAI hookedFish = null;
+
     public void SetRodStats(RodUpgradeSO.RodUpgradeData data)
     {
         this.maxLength = data.maxLength;
         this.reelSpeed = data.reelSpeed;
         this.throwPowerMultiplier = data.throwPowerMultiplier;
 
-        Debug.Log($"Updread!: Ma={maxLength}, ReelSpeed={reelSpeed}");
+        Debug.Log($"Updread!: distance={maxLength}, ReelSpeed={reelSpeed}");
     }
 
 
@@ -77,10 +79,12 @@ public class test : Equipment
         Vector2 direction = (mouseWorld - rodTip.position).normalized;
 
         float clampedCharge = Mathf.Clamp(chargeTime, 0f, maxChargeTime);
+
         //upgrade
         float throwPower = clampedCharge * baseThrowPower * throwPowerMultiplier;
         bobber.transform.position = rodTip.position;
         bobber.linearVelocity = direction * throwPower;
+
         //upgrade
         float newLenghtLine = Mathf.Lerp(minLength, maxLength, clampedCharge / maxChargeTime);
         fishingLine.distance = newLenghtLine;
@@ -117,8 +121,13 @@ public class test : Equipment
 
         if (Vector2.Distance(current, target) <= minLength)
         {
+            if (hookedFish != null)
+            {
+                hookedFish.OnCaught();
+                hookedFish = null;
+            }
+
             state = FishingState1.Idle;
-            bobberRetuen = true;
             Debug.Log("Complete reeling (trigger)");
             StartCoroutine(DelayBeforeNextCast());
         }
@@ -138,6 +147,15 @@ public class test : Equipment
         Debug.Log("Ready to cast again!");
     }
 
+    public void AttachFish(FishAI fish)
+    {
+        fish.isHooked = true;    // บอกปลาว่าติดเบ็ดอยู่
+        hookedFish = fish;       // เก็บ reference ไว้
+        Debug.Log("Fish hooked!");
+    }
 
-    
+   
+
+
+
 }

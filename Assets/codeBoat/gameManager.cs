@@ -6,13 +6,20 @@ public class gameManager : MonoBehaviour
 {
     public static gameManager instance;
 
-    public float playerMoney = 1000;
+    public int playerMoney = 100;
+    public int playerExp = 0;
+
     public float fishtSpawnTime;
 
-    public test currentRodScript;
+    public rod currentRodScript;
     public RodUpgradeSO rodUpgradeData;
     [SerializeField] private int currentRodLevel = 0;
 
+    
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -37,9 +44,8 @@ public class gameManager : MonoBehaviour
    
         var nextUpgrade = rodUpgradeData.upgrades[currentRodLevel + 1];
 
-        if (playerMoney >= nextUpgrade.upgradePrice)
+        if (playerMoney >= nextUpgrade.upgradePrice && playerExp >= nextUpgrade.level)
         {
-         
             playerMoney -= nextUpgrade.upgradePrice;
             currentRodLevel++;
           
@@ -48,9 +54,13 @@ public class gameManager : MonoBehaviour
             UpdateShopUI();
             Debug.Log($"Upgrade Success! Level: {currentRodLevel}, Money Left: {playerMoney}");
         }
-        else
+        else if (playerMoney < nextUpgrade.upgradePrice)
         {
             Debug.Log("Not enough money!");
+        }
+        else
+        {
+            Debug.Log("Not enough Level!");
         }
     }
 
@@ -68,10 +78,24 @@ public class gameManager : MonoBehaviour
        }
     }
 
+    //=================== FISH SYSTEM ===================//
+    public void AddMoney(int amount)
+    {
+        playerMoney += amount;
+        Debug.Log("Money: " + playerMoney);
+    }
+
+    public void AddExp(int amount)
+    {
+        playerExp += amount;
+        Debug.Log("EXP: " + playerExp);
+    }
+
     //=================== SHOP SYSTEM N UI ===================//
 
     [SerializeField] private GameObject upgradeMenu;
     [SerializeField] private TextMeshProUGUI playerCountMoney;
+    [SerializeField] private TextMeshProUGUI playerCurrentLevel;
     [SerializeField] private TextMeshProUGUI nextUpgradeText;
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button openShopButton;
@@ -83,6 +107,12 @@ public class gameManager : MonoBehaviour
             playerCountMoney.text = "$" + playerMoney.ToString("0");
     }
 
+    public void UpdateLevelUI()
+    {
+        if (playerCurrentLevel != null)
+            playerCurrentLevel.text = "Level:" + playerExp.ToString("0");
+    }
+
     public void ToggleShop()
     {
         if (upgradeMenu != null)
@@ -92,10 +122,8 @@ public class gameManager : MonoBehaviour
 
             if (isActive)
             {
-                // พอเปิดร้านปุ๊บ ให้เช็คราคาของทันที
                 UpdateShopUI();
             }
-
         }
     }
 

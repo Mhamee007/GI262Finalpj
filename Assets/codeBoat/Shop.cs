@@ -6,6 +6,7 @@ public class Shop : MonoBehaviour
 
     public gameManager gm;
     public Equipment rod;
+    public rod rodFish;
 
     
 }
