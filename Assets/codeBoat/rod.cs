@@ -18,7 +18,7 @@ public class rod : Equipment
 
     bool canCast = true;
 
-    private FishAI hookedFish = null;
+     public FishAI hookedFish = null;
 
     public void SetRodStats(RodUpgradeSO.RodUpgradeData data)
     {

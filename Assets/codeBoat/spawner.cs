@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class spawner : gameManager
+public class spawner :MonoBehaviour
 {
     public GameObject fishPrefab;
     public fishType[] fishTypes;

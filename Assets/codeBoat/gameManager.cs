@@ -26,6 +26,7 @@ public class gameManager : MonoBehaviour
         ApplyRodStats();
         UpdateMoneyUI();
         UpdateShopUI();
+        UpdateLevelUI();
 
         if (upgradeMenu != null)
         { 
@@ -52,6 +53,7 @@ public class gameManager : MonoBehaviour
             ApplyRodStats();
             UpdateMoneyUI();
             UpdateShopUI();
+
             Debug.Log($"Upgrade Success! Level: {currentRodLevel}, Money Left: {playerMoney}");
         }
         else if (playerMoney < nextUpgrade.upgradePrice)
