@@ -1,25 +1,31 @@
 using NUnit.Framework.Internal;
 using UnityEngine;
 
-public class FishAI : MonoBehaviour
+public class FishAI : FishManager
 {
-    public fishType fishData;
-    
+
     [SerializeField] private Transform targetLure;
-    private Vector2 randomTarget;
+    Vector2 randomTarget;
   
     public bool isHooked = false;
-    private float randomTimer;
-    public Transform waterBounds;
-
 
     void Start()
     {
+        fishRanSpeed = fishData.speed * Random.Range(0.5f, 1f);
         PickRandomDirection();
+       
     }
 
     void Update()
     {
+        lifeTime -= Time.deltaTime;
+        if (lifeTime <= 0f)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
+
         if (!isHooked)
         {
             DetectLure();
@@ -34,44 +40,27 @@ public class FishAI : MonoBehaviour
             }
                 
         }
-        else
-        {
-            // แรงดิ้นตอนติดเบ็ด (ทำให้รู้สึกสมจริง)
-            transform.position += new Vector3(
-                Mathf.Sin(Time.time * 8f) * 0.03f,
-                Mathf.Cos(Time.time * 6f) * 0.02f
-                );
-        }
-
-        /* 1. ตรวจสอบเหยื่อที่อยู่ใกล้
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, fishData.awarenessRadius);
-        foreach (Collider2D col in colliders)
-        {
-            if (col.CompareTag("Bobber"))
-            {
-                targetLure = col.transform;
-                break;
-            }
-        }
-        // 2. เคลื่อนที่ไปยังเป้าหมาย หรือว่ายน้ำแบบสุ่ม
-        if (targetLure != null)
-        {
-            // ว่ายเข้าหาเหยื่อ (และมีโอกาสกัด)
-            transform.position = Vector2.MoveTowards(transform.position, targetLure.position, speed * Time.deltaTime);
-        }*/
     }
 
     void DetectLure()
     {
+        if (rodRef != null && rodRef.currentHookedFish != null && rodRef.currentHookedFish != this)
+        {
+            targetLure = null;
+            return;
+        }
+
         Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, fishData.awarenessRadius);
         foreach (var col in cols)
         {
             if (col.CompareTag("Bobber"))
             {
-                if (Random.value < fishData.biteChance) // มีโอกาสไม่สนใจเหยื่อ
+                if (Random.value < fishData.biteChance) 
+                {
                     targetLure = col.transform;
-
-                return;
+                    return;
+                }
+  
             }
         }
 
@@ -83,7 +72,7 @@ public class FishAI : MonoBehaviour
         transform.position = Vector2.MoveTowards(
             transform.position,
             targetLure.position,
-            fishData.speed * Time.deltaTime
+            fishRanSpeed * Time.deltaTime
         );
     }
 
@@ -96,7 +85,7 @@ public class FishAI : MonoBehaviour
         transform.position = Vector2.MoveTowards(
             transform.position,
             randomTarget,
-            fishData.speed * 0.6f * Time.deltaTime
+            fishRanSpeed * 0.6f * Time.deltaTime
         );
     }
 
@@ -108,9 +97,13 @@ public class FishAI : MonoBehaviour
 
     public void OnCaught()
     {
-        Debug.Log($"Caught a {fishData.fishName}! +{fishData.price} coins");
         gameManager.instance.AddMoney(fishData.price);
         gameManager.instance.AddExp(fishData.exp);
+
+        if (rodRef != null && rodRef.currentHookedFish == this)
+            rodRef.currentHookedFish = null;
+        isHooked = false;
+
         Destroy(gameObject);
     }
 }

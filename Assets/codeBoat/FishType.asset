@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e0fbfaebe80fd40a749245c0e3c9f1, type: 3}
   m_Name: FishType
   m_EditorClassIdentifier: Assembly-CSharp::fishType
-  fishName: Opal
+  fishName: Fish1
   speed: 1
   awarenessRadius: 2
   biteChance: 0.6
   escapeChance: 0.2
-  price: 20
+  price: 10
+  exp: 1

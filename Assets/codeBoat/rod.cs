@@ -12,13 +12,16 @@ public class rod : Equipment
 
     //Rod stats
     
-     float chargeTime = 0f;
-     float maxChargeTime = 1f;
-     float baseThrowPower = 2f;
-
+    float chargeTime = 0f;
+    float maxChargeTime = 1f;
+    float baseThrowPower = 2f;
+     
     bool canCast = true;
+    public FishAI currentHookedFish = null;
+    public FishAI hookedFish = null;
 
-     public FishAI hookedFish = null;
+    public FishShyAI currentHookedFishShy = null;
+    public FishShyAI hookedFishShy = null;
 
     public void SetRodStats(RodUpgradeSO.RodUpgradeData data)
     {
@@ -49,10 +52,12 @@ public class rod : Equipment
                 {
                     doCast();
                     Debug.Log("Cast");
+
                 }
             }
             else
                 Debug.Log("cantCast");
+                
         }
         else if (state == FishingState1.Casted)
         {
@@ -101,7 +106,7 @@ public class rod : Equipment
 
     void ReelBobber()
     {
-         Rb2Dplayer.constraints = RigidbodyConstraints2D.FreezeAll;
+        Rb2Dplayer.constraints = RigidbodyConstraints2D.FreezeAll;
         state = FishingState1.Casted;
 
         //upgrade
@@ -126,7 +131,8 @@ public class rod : Equipment
                 hookedFish.OnCaught();
                 hookedFish = null;
             }
-
+            Rb2Dplayer.constraints = RigidbodyConstraints2D.FreezePositionY |
+                                        RigidbodyConstraints2D.FreezeRotation;
             state = FishingState1.Idle;
             Debug.Log("Complete reeling (trigger)");
             StartCoroutine(DelayBeforeNextCast());
@@ -141,20 +147,33 @@ public class rod : Equipment
 
     IEnumerator DelayBeforeNextCast()
     {
-        
-        yield return new WaitForSeconds(3f); 
+        yield return new WaitForSeconds(2f); 
         canCast = true;
         Debug.Log("Ready to cast again!");
     }
 
     public void AttachFish(FishAI fish)
     {
-        fish.isHooked = true;    // บอกปลาว่าติดเบ็ดอยู่
-        hookedFish = fish;       // เก็บ reference ไว้
+        hookedFish = fish;  // เก็บ reference ไว้
         Debug.Log("Fish hooked!");
+
+        if (currentHookedFish != null)
+            return; 
+
+        currentHookedFish = fish;
     }
 
-   
+    public void AttachFishShy(FishShyAI fishShy)
+    {
+        hookedFishShy = fishShy;  // เก็บ reference ไว้
+        Debug.Log("FishShy hooked!");
+
+        if (currentHookedFishShy != null)
+            return;
+
+        currentHookedFishShy = fishShy;
+    }
+
 
 
 

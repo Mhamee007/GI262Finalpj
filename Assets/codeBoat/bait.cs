@@ -15,12 +15,31 @@ public class bait : Equipment
         }
 
         FishAI fish = collision.GetComponent<FishAI>();
+        FishShyAI fishShy = collision.GetComponent<FishShyAI>();
 
         if (fish != null && !fish.isHooked)
         {
-            fish.isHooked = true;
-            rodRef.AttachFish(fish);
+            if (rodRef.currentHookedFish != null)
+                return;
+
+           
+            if (!fish.isHooked)
+            {
+                rodRef.AttachFish(fish);
+            }
         }
+
+        if (fishShy != null && !fishShy.isHooked)
+        {
+            if (rodRef.currentHookedFishShy != null)
+                return;
+
+            rodRef.AttachFishShy(fishShy);
+
+            fishShy.isHooked = true;     
+        }
+
+
 
     }
 
