@@ -2,15 +2,37 @@ using UnityEngine;
 
 public class cameramove : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] Transform player;
+    [SerializeField] Transform target;
+    public float followSpeed = 5f;  
+    public Vector3 offset;         
+
+    private Transform currentFollow; 
+
     void Start()
     {
-        
+        currentFollow = player;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            currentFollow = target;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            currentFollow = player;
+        }
     }
+
+    void LateUpdate()
+    {
+        if (currentFollow == null) return;
+
+        Vector3 desiredPosition = currentFollow.position + offset;
+        transform.position = Vector3.Lerp(transform.position, desiredPosition, followSpeed * Time.deltaTime);
+    }
+        
 }
