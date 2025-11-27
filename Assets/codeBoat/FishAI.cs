@@ -11,6 +11,11 @@ public class FishAI : FishManager
 
     void Start()
     {
+        if (rodRef == null)
+        {
+            rodRef = FindAnyObjectByType<rod>();
+        }
+
         fishRanSpeed = fishData.speed * Random.Range(0.5f, 1f);
         PickRandomDirection();
        
@@ -18,6 +23,8 @@ public class FishAI : FishManager
 
     void Update()
     {
+        
+
         lifeTime -= Time.deltaTime;
         if (lifeTime <= 0f)
         {

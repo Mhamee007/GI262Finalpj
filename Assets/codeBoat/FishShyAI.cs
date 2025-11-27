@@ -19,6 +19,11 @@ public class FishShyAI : FishManager
 
     void Start()
     {
+        if (rodRef == null)
+        {
+            rodRef = FindAnyObjectByType<rod>();
+        }
+
         fishRanSpeed = fishData.speed * Random.Range(0.7f, 1.5f);
         fleeSpeedMultiplier = Random.Range(1f, 2f);
 
@@ -54,7 +59,7 @@ public class FishShyAI : FishManager
         }
         else
             SwimRandomly();
-            CheckFearAndFlee();
+           
 
         if (isFleeing)
         {
@@ -62,7 +67,6 @@ public class FishShyAI : FishManager
             return;
         }
 
-        MoveTowardLure();
 
 
     }
@@ -121,15 +125,7 @@ public class FishShyAI : FishManager
         randomTarget = (Vector2)transform.position + fleeDirection * 3f;
     }
    
-    void MoveTowardLure()
-    {
-        transform.position = Vector2.MoveTowards(
-            transform.position,
-            targetLure.position,
-            fishRanSpeed * Time.deltaTime
-        );
-       
-    }
+   
 
     void SwimRandomly()
     {

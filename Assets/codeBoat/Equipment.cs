@@ -11,7 +11,7 @@ public class Equipment : MonoBehaviour
     protected float reelSpeed = 0.1f;
 
     protected float minLength = 1f;
-    protected float maxLength = 200f;
+    protected float maxLength = 50f;
 
 
     public FishingState1 state = FishingState1.Idle;

@@ -2,41 +2,53 @@ using UnityEngine;
 
 public class spawner :MonoBehaviour
 {
-    public GameObject fishPrefab;
+    public GameObject fishNormalPrefab;   
+    public GameObject fishShyPrefab;
     public fishType[] fishTypes;
 
-    public float spawnTime = 3f;
-    public Vector2 spawnAreaMin;
-    public Vector2 spawnAreaMax;
-    float timer = 0f;
-
-    public float spawnRate = 3f;
+    public float fishSpawnInterval = 20f;
+    public float fishShySpawnInterval = 30f;
     public float spawnRadius = 8f;
 
-    private void Start()
-    {
-        InvokeRepeating(nameof(SpawnFish), 1f, spawnRate);
-    }
-
+    float fishTimer = 0f;
+    float fishShyTimer = 0f;
     void Update()
     {
-        timer += Time.deltaTime;
+        fishTimer += Time.deltaTime;
+        fishShyTimer += Time.deltaTime;
 
-        if (timer >= spawnTime)
+        
+        if (fishTimer >= fishSpawnInterval)
         {
-            SpawnFish();
-            timer = 0f;
+            int count = Random.Range(2, 4); 
+            SpawnMultipleFish(fishNormalPrefab, count);
+            fishTimer = 0f;
+        }
+
+       
+        if (fishShyTimer >= fishShySpawnInterval)
+        {
+            SpawnMultipleFish(fishShyPrefab, 1);
+            fishShyTimer = 0f;
         }
     }
 
-    void SpawnFish()
+    void SpawnMultipleFish(GameObject prefab, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            SpawnFish(prefab);
+        }
+    }
+
+    void SpawnFish(GameObject prefab)
     {
         Vector2 pos = (Vector2)transform.position + Random.insideUnitCircle * spawnRadius;
 
-        GameObject f = Instantiate(fishPrefab, pos, Quaternion.identity);
+        GameObject f = Instantiate(prefab, pos, Quaternion.identity);
+        fishType data = fishTypes[Random.Range(0, fishTypes.Length)];
 
-        FishAI ai = f.GetComponent<FishAI>();
-        ai.fishData = fishTypes[Random.Range(0, fishTypes.Length)];
-
+        FishManager fm = f.GetComponent<FishManager>();
+        fm.fishData = data;
     }
 }

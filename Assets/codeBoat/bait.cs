@@ -34,8 +34,11 @@ public class bait : Equipment
             if (rodRef.currentHookedFishShy != null)
                 return;
 
-            rodRef.AttachFishShy(fishShy);
-
+            
+            if (!fishShy.isHooked)
+            {
+                rodRef.AttachFishShy(fishShy);
+            }
             fishShy.isHooked = true;     
         }
 

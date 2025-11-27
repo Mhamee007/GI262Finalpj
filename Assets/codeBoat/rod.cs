@@ -130,7 +130,15 @@ public class rod : Equipment
             {
                 hookedFish.OnCaught();
                 hookedFish = null;
+                currentHookedFish = null;
             }
+            if (hookedFishShy != null)
+            {
+                hookedFishShy.OnCaught();
+                hookedFishShy = null;
+                currentHookedFishShy = null;
+            }
+
             Rb2Dplayer.constraints = RigidbodyConstraints2D.FreezePositionY |
                                         RigidbodyConstraints2D.FreezeRotation;
             state = FishingState1.Idle;

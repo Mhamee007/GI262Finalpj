@@ -3,10 +3,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class fishingRod : Equipment
+public class fishingline : Equipment
 {
-    public Transform rodTip;   
-    public Transform bobber;  
+    public Transform rodTip;     
    [SerializeField] LineRenderer line;
 
     void Start()
