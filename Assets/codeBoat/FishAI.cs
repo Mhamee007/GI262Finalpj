@@ -33,7 +33,7 @@ public class FishAI : FishManager
             Destroy(gameObject);
             return;
         }
-        
+
 
         if (!isHooked)
         {
@@ -41,13 +41,18 @@ public class FishAI : FishManager
 
             if (targetLure != null)
             {
-                MoveTowardLure(); 
+                MoveTowardLure();
             }
             else
             {
                 SwimRandomly();
             }
-                
+
+        }
+        else
+        {
+            FollowBobber();
+            return;
         }
     }
 
@@ -101,6 +106,7 @@ public class FishAI : FishManager
     void PickRandomDirection()
     {
         randomTarget = (Vector2)transform.position + Random.insideUnitCircle * 2f;
+        randomTarget.y = Mathf.Clamp(randomTarget.y, -4, -23);
         randomTimer = Random.Range(1f, 3f);
     }
 
@@ -114,5 +120,17 @@ public class FishAI : FishManager
         isHooked = false;
 
         Destroy(gameObject);
+    }
+
+    void FollowBobber()
+    {
+        if (rodRef == null) return;
+
+        Transform bobber = rodRef.bobber.transform;
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            bobber.position,
+            fishRanSpeed * 5f * Time.deltaTime
+        );
     }
 }

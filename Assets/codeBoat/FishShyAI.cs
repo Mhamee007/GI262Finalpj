@@ -108,7 +108,6 @@ public class FishShyAI : FishManager
                 StartFleeing(col.transform);
                 return true;
             }
-            Debug.Log("Run away");
         }
 
         return false;
@@ -166,7 +165,7 @@ public class FishShyAI : FishManager
         transform.position = Vector2.MoveTowards(
             transform.position,
             bobber.position,
-            fishRanSpeed * 1.5f * Time.deltaTime
+            fishRanSpeed * 5f * Time.deltaTime
         );
     }
 }
