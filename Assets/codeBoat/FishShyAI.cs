@@ -5,7 +5,7 @@ public class FishShyAI : FishManager
 
     [SerializeField] private Transform targetLure;
     Vector2 randomTarget;
-
+    public rod rodRef;
     public bool isHooked = false;
 
     bool isFleeing = false;

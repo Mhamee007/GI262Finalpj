@@ -33,7 +33,11 @@ public class gameManager : MonoBehaviour
             upgradeMenu.SetActive(false); 
         }
     }
-  
+    private void Update()
+    {
+        
+    }
+
     public void UpgradeRod()
     {
       
@@ -85,12 +89,15 @@ public class gameManager : MonoBehaviour
     {
         playerMoney += amount;
         Debug.Log("Money: " + playerMoney);
+        UpdateMoneyUI();   
+        UpdateShopUI();
     }
 
     public void AddExp(int amount)
     {
         playerExp += amount;
         Debug.Log("EXP: " + playerExp);
+        UpdateLevelUI();
     }
 
     //=================== SHOP SYSTEM N UI ===================//
@@ -140,7 +147,7 @@ public class gameManager : MonoBehaviour
 
         var next = rodUpgradeData.upgrades[currentRodLevel + 1];
 
-        nextUpgradeText.text = "Upgrade Price: $" + next.upgradePrice;
+        nextUpgradeText.text = "Upgrade Price: $" + next.upgradePrice +  " Lv require:" + next.level;
         upgradeButton.interactable = playerMoney >= next.upgradePrice;
     }
 }

@@ -6,15 +6,17 @@ public class FishAI : FishManager
 
     [SerializeField] private Transform targetLure;
     Vector2 randomTarget;
-  
+    public rod rodRef;
     public bool isHooked = false;
 
     void Start()
     {
+       
         if (rodRef == null)
         {
             rodRef = FindAnyObjectByType<rod>();
         }
+
 
         fishRanSpeed = fishData.speed * Random.Range(0.5f, 1f);
         PickRandomDirection();

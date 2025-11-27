@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3872298690169199532}
   - component: {fileID: 8968674123713510964}
-  - component: {fileID: 2257052525959777622}
-  - component: {fileID: -936296610522914370}
+  - component: {fileID: 9053777845510790591}
+  - component: {fileID: 907217398543039470}
   m_Layer: 0
   m_Name: fish1
   m_TagString: Untagged
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2456074169979940773}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.70734715, w: 0.7068663}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7073474, w: 0.70686615}
   m_LocalPosition: {x: -10.38738, y: -2.94784, z: 0}
   m_LocalScale: {x: 0.26933694, y: 0.26933694, z: 0.26933694}
   m_ConstrainProportionsScale: 0
@@ -92,7 +92,44 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2257052525959777622
+--- !u!70 &9053777845510790591
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2456074169979940773}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
+--- !u!114 &907217398543039470
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,31 +143,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FishAI
   lifeTime: 60
   fishData: {fileID: 11400000, guid: 146ab50a9eec7c04dbda1b063c9dc6c5, type: 2}
-  rodRef: {fileID: 0}
   fishRanSpeed: 0
   randomTimer: 0
-  targetLure: {fileID: 998442229941107422, guid: d133c987a9f9ea548bf05daa8252b798, type: 3}
+  targetLure: {fileID: 0}
+  rodRef: {fileID: 0}
   isHooked: 0
---- !u!136 &-936296610522914370
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2456074169979940773}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}

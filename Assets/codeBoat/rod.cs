@@ -168,6 +168,7 @@ public class rod : Equipment
         if (currentHookedFish != null)
             return; 
 
+        hookedFish = fish;
         currentHookedFish = fish;
     }
 
@@ -181,8 +182,4 @@ public class rod : Equipment
 
         currentHookedFishShy = fishShy;
     }
-
-
-
-
 }

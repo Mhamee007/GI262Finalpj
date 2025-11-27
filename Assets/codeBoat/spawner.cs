@@ -23,6 +23,7 @@ public class spawner :MonoBehaviour
             int count = Random.Range(2, 4); 
             SpawnMultipleFish(fishNormalPrefab, count);
             fishTimer = 0f;
+
         }
 
        
