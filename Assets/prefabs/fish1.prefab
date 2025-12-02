@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3872298690169199532}
   - component: {fileID: 8968674123713510964}
-  - component: {fileID: 9053777845510790591}
   - component: {fileID: 907217398543039470}
+  - component: {fileID: 8766758106440027267}
   m_Layer: 0
   m_Name: fish1
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7073474, w: 0.70686615}
   m_LocalPosition: {x: -10.38738, y: -2.94784, z: 0}
-  m_LocalScale: {x: 0.26933694, y: 0.26933694, z: 0.26933694}
+  m_LocalScale: {x: 0.044575993, y: 0.044575993, z: 0.044575993}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -81,8 +81,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.6413045, a: 1}
+  m_Sprite: {fileID: -771699472000435176, guid: f26154c30150c3a419624dd07b0e5385, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -92,8 +92,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &9053777845510790591
-CapsuleCollider2D:
+--- !u!114 &907217398543039470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2456074169979940773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 422eb61b7f9290e49a40a776b43a2823, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishAI
+  lifeTime: 60
+  fishData: {fileID: 11400000, guid: 146ab50a9eec7c04dbda1b063c9dc6c5, type: 2}
+  fishRanSpeed: 0
+  randomTimer: 0
+  targetLure: {fileID: 0}
+  rodRef: {fileID: 0}
+  isHooked: 0
+--- !u!61 &8766758106440027267
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -122,29 +141,19 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
-  m_Direction: 0
---- !u!114 &907217398543039470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2456074169979940773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 422eb61b7f9290e49a40a776b43a2823, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishAI
-  lifeTime: 60
-  fishData: {fileID: 11400000, guid: 146ab50a9eec7c04dbda1b063c9dc6c5, type: 2}
-  fishRanSpeed: 0
-  randomTimer: 0
-  targetLure: {fileID: 0}
-  rodRef: {fileID: 0}
-  isHooked: 0
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 20.48, y: 13.82}
+    newSize: {x: 1, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 20.48, y: 13.82}
+  m_EdgeRadius: 0
