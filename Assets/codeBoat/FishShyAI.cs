@@ -122,6 +122,9 @@ public class FishShyAI : FishManager
 
         Vector2 fleeDirection = (transform.position - threat.position).normalized;
         randomTarget = (Vector2)transform.position + fleeDirection * 3f;
+        randomTarget.y = Mathf.Clamp(randomTarget.y, -23, -3);
+        randomTarget.x = Mathf.Clamp(randomTarget.x, -31, 31);
+
     }
    
    
@@ -142,6 +145,8 @@ public class FishShyAI : FishManager
     void PickRandomDirection()
     {
         randomTarget = (Vector2)transform.position + Random.insideUnitCircle * 2f;
+        randomTarget.y = Mathf.Clamp(randomTarget.y, -23, -3);
+        randomTarget.x = Mathf.Clamp(randomTarget.x, -31, 31);
         randomTimer = Random.Range(1f, 3f);
     }
 

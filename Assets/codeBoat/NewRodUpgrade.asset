@@ -22,9 +22,14 @@ MonoBehaviour:
     maxLength: 15
     reelSpeed: 2
     throwPowerMultiplier: 1
-    upgradePrice: 20
+    upgradePrice: 30
   - level: 10
-    maxLength: 50
+    maxLength: 30
+    reelSpeed: 2
+    throwPowerMultiplier: 1
+    upgradePrice: 60
+  - level: 20
+    maxLength: 45
     reelSpeed: 5
     throwPowerMultiplier: 1
-    upgradePrice: 50
+    upgradePrice: 100
