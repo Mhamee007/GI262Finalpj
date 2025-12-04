@@ -7,6 +7,7 @@ public class FishAI : FishManager
     [SerializeField] private Transform targetLure;
     Vector2 randomTarget;
     public rod rodRef;
+    public Transform bait;
     public bool isHooked = false;
 
     void Start()
@@ -49,7 +50,7 @@ public class FishAI : FishManager
             }
 
         }
-        else
+        else if(isHooked)
         {
             FollowBobber();
             return;
@@ -71,6 +72,7 @@ public class FishAI : FishManager
             {
                 if (Random.value < fishData.biteChance) 
                 {
+                  
                     targetLure = col.transform;
                     return;
                 }
@@ -83,11 +85,16 @@ public class FishAI : FishManager
 
     void MoveTowardLure()
     {
-        transform.position = Vector2.MoveTowards(
+        Vector2 newPos = Vector2.MoveTowards(
             transform.position,
             targetLure.position,
             fishRanSpeed * Time.deltaTime
         );
+        if (newPos.y > -3f)
+        {
+            PickRandomDirection();
+        }
+
     }
 
     void SwimRandomly()
@@ -106,7 +113,8 @@ public class FishAI : FishManager
     void PickRandomDirection()
     {
         randomTarget = (Vector2)transform.position + Random.insideUnitCircle * 2f;
-        randomTarget.y = Mathf.Clamp(randomTarget.y, -4, -23);
+        randomTarget.y = Mathf.Clamp(randomTarget.y, -23, -3);
+        randomTarget.x = Mathf.Clamp(randomTarget.x, -31, 31);
         randomTimer = Random.Range(1f, 3f);
     }
 
@@ -117,6 +125,7 @@ public class FishAI : FishManager
 
         if (rodRef != null && rodRef.currentHookedFish == this)
             rodRef.currentHookedFish = null;
+           
         isHooked = false;
 
         Destroy(gameObject);

@@ -19,5 +19,7 @@ public class fishingline : Equipment
 
         line.SetPosition(0, rodTip.position);
         line.SetPosition(1, bobber.position);
+        line.sortingOrder = 2;
+
     }
 }
